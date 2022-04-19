@@ -1,7 +1,12 @@
+<div *ngIf="showLayer">
 <div class="map-container"
      leaflet 
       
      [leafletOptions]="options" 
      *ngIf="tokenLoaded"
      >
+     <div *ngFor="let layer of layers"  >
+     <div *ngIf="showLayer" [leafletLayer]="layer"></div>
+</div>
+</div>
 </div>
