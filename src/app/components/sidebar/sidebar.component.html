@@ -1,0 +1,112 @@
+<div class="divheight" *ngIf="showScans()" >
+    <h2>Scans</h2>
+<mat-nav-list >
+    <mat-list-item (click)="selectScan(i)" *ngFor="let i of scans_list">
+        <div mat-line>
+            {{ i.task_name }}
+        </div>
+        <p mat-line>
+            {{ i.task_gps }}
+        </p>
+        <button mat-icon-button #trigger=matMenuTrigger [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+ </button>
+    </mat-list-item>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>Edit</button>
+        <button mat-menu-item>Delete</button>
+    </mat-menu>
+</mat-nav-list>
+</div>
+<div class="divheight" *ngIf="showPipelines()" >
+    <h1>{{scan_selected.task_name}}</h1>
+    <h2>Pipelines</h2>
+<mat-nav-list >
+    <mat-list-item (click)="load_pipeline(i)" *ngFor="let i of pipeline_list">
+        <div mat-line>
+            <h3>{{ i.pipeline_name }}</h3>
+        </div>
+        <p mat-line>
+            {{ i.status }}
+        </p>
+        <div mat-line>Detection type : {{i.detection_type}}</div>
+        <button mat-icon-button #trigger=matMenuTrigger [matMenuTriggerFor]="menu">
+    <mat-icon>more_vert</mat-icon>
+ </button>
+    </mat-list-item>
+    <mat-menu #menu="matMenu">
+        <button mat-menu-item>Edit</button>
+        <button mat-menu-item>Delete</button>
+    </mat-menu>
+    <!-- back button -->
+    <button mat-raised-button (click)="backToScans()">Back</button>
+    <button mat-raised-button (click)="newPipeline()">New Pipeline</button>
+</mat-nav-list>
+
+
+</div>
+<!-- add mat card with pipeline details -->
+<div *ngIf="showPipelineDetails()">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                {{pipeline_selected.pipeline_name}}
+            </mat-card-title>
+            <mat-card-subtitle>
+                {{pipeline_selected.detection_type}}
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <h3>Total trees: {{results.length}}</h3>
+            <br>
+            <h3>Healthy Trees: {{results.length*0.8}}</h3>
+            <br>
+            <h3>Damaged Trees: {{results.length*0.2}}</h3>
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="backToPipelines()">Back</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
+<div *ngIf="showNewPipeline()">
+    <mat-card>
+        <mat-card-header>
+            <mat-card-title>
+                Create Pipeline
+            </mat-card-title>
+            <mat-card-subtitle>
+                Scan Selected:{{scan_selected.task_name}}
+            </mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            <!-- create a mat from for getting pipeline name and type -->
+            <mat-form-field>
+                <input matInput placeholder="Pipeline Name" [(ngModel)]="new_pipeline.pipeline_name">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <input matInput placeholder="Area" [(ngModel)]="new_pipeline.polygon_area" readonly>
+            </mat-form-field>
+            <br>
+            <!-- creat a dropdown for getting pipeline type -->
+            <mat-form-field>
+                <mat-select placeholder="Pipeline Type" [(ngModel)]="new_pipeline.detection_type" (selectionChange)="customCheck()">
+                    <mat-option *ngFor="let type of pipeline_types" [value]="type">
+                        {{type}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field *ngIf="new_pipeline.detection_type=='Custom'">
+                    <input matInput placeholder="Model Name" [(ngModel)]="modelName">
+            </mat-form-field>
+        <div *ngIf="new_pipeline.detection_type=='Custom'">
+              <h3>Number of Examples :{{annotations.length}} </h3>  
+        </div>
+            <!-- back button -->
+        </mat-card-content>
+        <mat-card-actions>
+            <button mat-raised-button (click)="backToPipelines()">Cancel</button>
+            <button mat-raised-button (click)="createPipeline()">Save</button>
+        </mat-card-actions>
+    </mat-card>
+</div>
