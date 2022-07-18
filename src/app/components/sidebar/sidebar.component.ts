@@ -30,7 +30,7 @@ export class SidebarComponent implements OnInit {
     this.get_scans()
     this.odmservice.getNewPipeline().subscribe
     (pipeline => { //message contains the data sent from service
-      this.new_pipeline.polygon_area = pipeline.polygon_area;
+      this.new_pipeline.area = pipeline.area;
       console.log(this.new_pipeline);
   })
   this.odmservice.getAnnotation().subscribe((annotations) => {
