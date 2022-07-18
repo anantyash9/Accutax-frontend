@@ -93,7 +93,7 @@ export class MapComponent implements OnInit {
     
     this.map.fitBounds(L.geoJSON(e.layer.toGeoJSON()).getBounds());
     var newPipeline:Pipeline=new Pipeline()
-    newPipeline.polygon_area=<number[][][]>e.layer.toGeoJSON().geometry.coordinates;
+    newPipeline.area=<number[][][]>e.layer.toGeoJSON().geometry.coordinates;
     this.odmService.sendNewPipeline(newPipeline);
     }
     else{
@@ -141,7 +141,7 @@ export class MapComponent implements OnInit {
       (pipeline => { //message contains the data sent from service
         this.pipeline=pipeline;
         this.pipeline_layers=[]
-        var area=JSON.parse(JSON.stringify(this.pipeline.polygon_area));
+        var area=JSON.parse(JSON.stringify(this.pipeline.area));
         this.fixcoordinates(area)
         this.pipeline_layers.push(polygon(area))
         this.map.fitBounds(polygon(area).getBounds()) 

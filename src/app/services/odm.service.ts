@@ -14,13 +14,13 @@ import { GeoJsonObject } from 'geojson';
 export class OdmService {
   createPipeline(new_pipeline: any,model:String="",geoJSONs:GeoJsonObject[]=[]) {
     console.log(geoJSONs);
-    new_pipeline.polygon_area = new_pipeline.polygon_area[0]
+    new_pipeline.area = new_pipeline.area[0]
     if (new_pipeline.detection_type != 'Custom'){
-
+      console.log("new pipeline: ",new_pipeline);
     return this.http.post('http://localhost:5000/pipeline', {"pipeline":new_pipeline}, { responseType: 'json' });
   }
   else{
-    return this.http.post('http://localhost:5000/pipeline', {"pipeline":new_pipeline,"model_name":model,"geojsons":geoJSONs}, { responseType: 'json' });
+    return this.http.post('http://localhost:5000/pipeline', {"pipeline":new_pipeline,"model_name":model,"uploaded_geojsons":geoJSONs}, { responseType: 'json' });
 }}
 
   getPipelines(i: any): Observable<string[]> {
